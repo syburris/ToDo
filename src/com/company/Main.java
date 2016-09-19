@@ -56,6 +56,7 @@ public class Main {
                                 checkbox = "[X]";
                             }
                             System.out.println(checkbox + " " + num + ". " + item3.text);
+                            System.out.printf("%s %s. %s\n", checkbox, num, item3.text); //does the same thing as the previous line
                         }
                         break;
                     case "4":
