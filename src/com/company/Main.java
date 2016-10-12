@@ -97,7 +97,7 @@ public class Main {
         }
     }
     public static void deleteToDo(Connection conn, Scanner scanner) throws SQLException {
-        System.out.println("Which item do you want to delte?");
+        System.out.println("Which item do you want to delete?");
         int i = Integer.valueOf(scanner.nextLine());
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM to_dos WHERE id = ?");
         stmt.setInt(1, i);
