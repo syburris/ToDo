@@ -53,7 +53,7 @@ public class Main {
                         toggleTodo(conn, scanner);
                         break;
                     case "3":
-                        toDoList(conn, user);
+                        toDoList(conn);
                         break;
                     case "5":
                         isLoggedIn = false;
@@ -93,16 +93,16 @@ public class Main {
         stmt.setInt(1,i);
         stmt.execute();
     }
-    public static void toDoList (Connection conn, User user) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM to_dos WHERE user_id = ?");
-        stmt.setInt(1,user.id);
+    public static void toDoList (Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM to_dos INNER JOIN users ON to_dos.user_id = users.id");
         ResultSet results = stmt.executeQuery();
         ArrayList<Item> items = new ArrayList<>();
         while (results.next()) {
-            int id = results.getInt("id");
-            String text = results.getString("text");
-            boolean isDone = results.getBoolean("is_done");
-            Item item = new Item(id,text,isDone);
+            int id = results.getInt("to_dos.id");
+            String text = results.getString("to_dos.text");
+            boolean isDone = results.getBoolean("to_dos.is_done");
+            String name = results.getString("users.name");
+            Item item = new Item(id,text,isDone, name);
             items.add(item);
         }
 
@@ -112,7 +112,7 @@ public class Main {
             if (item3.isDone) {
                 checkbox = "[X]";
             }
-            System.out.printf("%s %s. %s\n", checkbox, item3.id, item3.text); //does the same thing as the previous line
+            System.out.printf("%s %s. %s by %s\n", checkbox, item3.id, item3.text, item3.author); //does the same thing as the previous line
         }
     }
     public static void deleteToDo(Connection conn, Scanner scanner) throws SQLException {
